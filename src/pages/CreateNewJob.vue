@@ -64,8 +64,8 @@ export default {
         name: 'Иван Иванов',
         isArchive: false,
         role: 'waiter',
-        phone: '+7 (999) 999-9999',
-        birthday: '12.02.1982',
+        phone: '',
+        birthday: '',
       },
       errors: {
         nameError: '',
@@ -109,6 +109,10 @@ export default {
       } else {
         errors.birthdayError = '';
       }
+      console.info('Проверка на верность заполнения данных: ', {
+        haveErrors: haveErrors,
+        errors: this.errors,
+      });
 
       return haveErrors;
     },
@@ -117,6 +121,7 @@ export default {
         return;
       }
       this.$store.commit('addNew', this.newJob);
+      console.trace('Добавлен новый сотрудник: ', { newJob: this.newJob });
       this.$router.push('/');
     },
   },

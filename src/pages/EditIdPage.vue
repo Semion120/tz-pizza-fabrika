@@ -103,6 +103,7 @@ export default {
       if (!job.role) {
         this.roleError = 'Пожалуйста, выберите профессию';
         haveErrors = true;
+        console.warn('Не выбрано поле профессии!');
       } else {
         this.roleError = '';
       }
@@ -111,6 +112,10 @@ export default {
     saveEditInfo() {
       if (!this.checkRole()) {
         this.$store.commit('editJobs', this.editedJob);
+        console.trace(`Обновление данных ${this.activeJob.name}: `, {
+          oldJob: this.activeJob,
+          editedJob: this.editedJob,
+        });
         this.$router.push('/');
       }
     },
@@ -125,6 +130,10 @@ export default {
       } else if (this.activeJob.role == 'cook') {
         roleRu = 'Повар';
       }
+      console.info('Профессия переведена на русский: ', {
+        translate: roleRu,
+        job: this.activeJob,
+      });
       return roleRu;
     },
     isArchiveInfo() {
@@ -134,13 +143,27 @@ export default {
       } else {
         isArchive = 'Нет';
       }
+      console.info(
+        'Пометка про архив переведена из булевого выражения на русский язык: ',
+        {
+          isArchive: isArchive,
+          job: this.activeJob,
+        }
+      );
       return isArchive;
     },
   },
   watch: {
     editedJob: {
       handler() {
-        if (JSON.stringify(this.activeJob) == JSON.stringify(this.editedJob)) {
+        const isSameJobs =
+          JSON.stringify(this.activeJob) == JSON.stringify(this.editedJob);
+        console.info('Проверка на идентичность oldJob и editedJob: ', {
+          isSame: isSameJobs,
+          editedJob: this.editedJob,
+          oldJob: this.activeJob,
+        });
+        if (isSameJobs) {
           this.buttonToggle = 'p-button-success p-disabled';
         } else {
           this.buttonToggle = 'p-button-success';

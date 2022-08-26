@@ -42,6 +42,7 @@ export default {
   methods: {
     showFilter() {
       this.isShowFilters = !this.isShowFilters;
+      console.trace('Открытие/закрытие фильтра');
     },
   },
   computed: {
@@ -50,6 +51,7 @@ export default {
         return this.$store.state.selectedSort;
       },
       set(value) {
+        console.info('Изменение параметров сортировки: ', { value });
         this.$store.commit('updateSelectedSort', value);
       },
     },
@@ -58,11 +60,17 @@ export default {
         return this.$store.state.filters;
       },
       set(value) {
+        console.info('Изменение параметров фильтра: ', { value });
         this.$store.commit('updateFilters', value);
       },
     },
     sortedAndFilteredJobs() {
-      return this.$store.getters.sortedAndFiltredJobs;
+      const doneArray = this.$store.getters.sortedAndFiltredJobs;
+      console.trace(
+        'Получение отфильтрованных и отсортированных результатов: ',
+        { filters: this.filters, sort: this.selectedSort, jobsArray: doneArray }
+      );
+      return doneArray;
     },
   },
 };
